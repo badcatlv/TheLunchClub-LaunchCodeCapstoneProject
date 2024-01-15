@@ -4,7 +4,7 @@
 
 namespace option4mvc.Data.Migrations
 {
-    public partial class Initializing : Migration
+    public partial class InitialMigrationtest : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
