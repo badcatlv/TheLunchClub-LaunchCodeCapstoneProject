@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Carts\" />
+    <Folder Include="Models\OrderModels\" />
   </ItemGroup>
 
 </Project>

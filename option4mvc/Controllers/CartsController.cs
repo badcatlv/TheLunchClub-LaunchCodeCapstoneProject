@@ -19,7 +19,7 @@ namespace option4mvc.Controllers
             _context = context;
         }
 
-        // GET: Carts
+       /* // GET: Carts
         public async Task<IActionResult> Index()
         {
               return _context.Cart != null ? 
@@ -158,6 +158,6 @@ namespace option4mvc.Controllers
         private bool CartExists(int id)
         {
           return (_context.Cart?.Any(e => e.CartId == id)).GetValueOrDefault();
-        }
+        }*/
     }
 }
