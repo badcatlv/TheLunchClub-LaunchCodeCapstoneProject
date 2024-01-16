@@ -14,6 +14,17 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+//Code below configures login with google, found at the following article: "Google external login setup in ASP.NET Core" on microsoft learn, article publish date 2-9-23
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+});
+//Code above configures login with google
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
