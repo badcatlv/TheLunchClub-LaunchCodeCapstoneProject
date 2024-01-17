@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using option4mvc.Data;
 
@@ -11,9 +12,10 @@ using option4mvc.Data;
 namespace option4mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240117005657_EditOrderAndCartTableColumns")]
+    partial class EditOrderAndCartTableColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,10 +234,19 @@ namespace option4mvc.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"), 1L, 1);
 
+                    b.Property<int>("CartDetailId")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CartId");
+
+                    b.HasIndex("CartDetailId")
+                        .IsUnique();
 
                     b.ToTable("Cart");
                 });
@@ -267,7 +278,15 @@ namespace option4mvc.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("OrderId");
+
+                    b.HasIndex("OrderStatusId");
 
                     b.ToTable("Order");
                 });
@@ -280,10 +299,15 @@ namespace option4mvc.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"), 1L, 1);
 
+                    b.Property<int?>("OrderDetailId1")
+                        .HasColumnType("int");
+
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderDetailId1");
 
                     b.HasIndex("OrderId");
 
@@ -297,6 +321,9 @@ namespace option4mvc.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderStatusId"), 1L, 1);
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
 
                     b.Property<string>("StatusName")
                         .HasColumnType("nvarchar(max)");
@@ -357,13 +384,47 @@ namespace option4mvc.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("option4mvc.Models.CartModels.Cart", b =>
+                {
+                    b.HasOne("option4mvc.Models.CartModels.CartDetail", null)
+                        .WithOne("Cart")
+                        .HasForeignKey("option4mvc.Models.CartModels.Cart", "CartDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("option4mvc.Models.OrderModels.Order", b =>
+                {
+                    b.HasOne("option4mvc.Models.OrderModels.OrderStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
+                });
+
             modelBuilder.Entity("option4mvc.Models.OrderModels.OrderDetail", b =>
                 {
+                    b.HasOne("option4mvc.Models.OrderModels.OrderDetail", null)
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderDetailId1");
+
                     b.HasOne("option4mvc.Models.OrderModels.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("option4mvc.Models.CartModels.CartDetail", b =>
+                {
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("option4mvc.Models.OrderModels.OrderDetail", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

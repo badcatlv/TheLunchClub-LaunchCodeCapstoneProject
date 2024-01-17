@@ -3,10 +3,7 @@
     public class Cart
     {
         public int CartId { get; set; }
-        public string? UserId { get; set; }
-        public int CartDetailId { get; set; }
-        public bool? IsDeleted { get; set; }
-
-
+        public bool? IsDeleted { get; set; } = false;
+        //TODO: Add user properties and connection, add cart detail connection.
     }
 }
